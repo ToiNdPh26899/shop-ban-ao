@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-css.css}">
+</head>
+<body>
+<main class="container">
+    <section class="container mt-5 mb-3">
+        <form action="#" th:action="@{/admin/san-pham/save}"
+              th:object="${sanPham}" method="post">
+
+            <input type="hidden" th:field="*{idSanPham}">
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Ma san pham</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control w-25" th:field="*{maSanPham}">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Ten san pham</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control w-25" th:field="*{tenSanPham}">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Gia giao ban</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control w-25" th:field="*{giaGiaoBan}">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Mo ta san pham</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control w-25" th:field="*{moTa}">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Loai ao</label>
+                <div class="col-sm-10">
+                    <select class="form-select w-25" th:field="*{idLoaiAo}" aria-label="Default select example">
+                        <option th:each="temp: ${loaiAos}"
+                                th:text="${temp.tenLoaiAo}"
+                                th:value="${temp.idLoaiAo}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Co ao</label>
+                <div class="col-sm-10">
+                    <select class="form-select w-25" th:field="*{idCoAo}" aria-label="Default select example">
+                        <option th:each="temp: ${coAos}"
+                                th:text="${temp.tenCoAo}"
+                                th:value="${temp.idCoAo}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Tay ao</label>
+                <div class="col-sm-10">
+                    <select class="form-select w-25" th:field="*{idTayAo}" aria-label="Default select example">
+                        <option th:each="temp: ${tayAos}"
+                                th:text="${temp.loaiTayAo}"
+                                th:value="${temp.idTayAo}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Chat lieu</label>
+                <div class="col-sm-10">
+                    <select class="form-select w-25" th:field="*{idChatLieu}" aria-label="Default select example">
+                        <option th:each="temp: ${chatLieus}"
+                                th:text="${temp.tenChatLieu}"
+                                th:value="${temp.idChatLieu}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Thuong hieu</label>
+                <div class="col-sm-10">
+                    <select class="form-select w-25" th:field="*{idThuongHieu}" aria-label="Default select example">
+                        <option th:each="temp: ${thuongHieus}"
+                                th:text="${temp.tenThuongHieu}"
+                                th:value="${temp.idThuongHieu}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <input type="hidden" th:field="*{soLuongTon}">
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Trang thai</label>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" value="1" th:field="*{trangThai}"
+                               type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Dang kinh doanh
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" value="0" th:field="*{trangThai}"
+                               type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                               checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Ngung kinh doanh
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" value="Save" class="btn btn-success">
+            <a th:href="@{/admin}" class="btn btn-danger">Cancel</a>
+        </form>
+    </section>
+
+    <section>
+        <h3 class="text-center mb-3">San Pham</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ma san pham</th>
+                <th scope="col">Ten san pham</th>
+                <th scope="col">So luong</th>
+                <th scope="col">Gia</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="temp, loop: ${data.content}">
+                <th scope="row" th:text="${loop.index + 1}"></th>
+                <td th:text="${temp.maSanPham}"></td>
+                <td th:text="${temp.tenSanPham}"></td>
+                <td th:text="${temp.soLuong}"></td>
+                <td th:text="${temp.giaGiaoBan}"></td>
+                <td>
+                    <a th:href="@{/admin/san-pham/detail(sanPhamId=${temp.idSanPham}, page=${pageNo})}"
+                       class="btn btn-primary">Edit</a>
+                    <a th:href="@{/admin/anh-san-pham/hien-thi(sanPhamId=${temp.idSanPham})}"
+                       class="btn btn-primary">Them anh</a>
+                    <a th:href="@{/admin/kich-co-san-pham/hien-thi(sanPhamId=${temp.idSanPham})}"
+                       class="btn btn-primary">Them kich co</a>
+                    <a th:href="@{/admin/san-pham-chi-tiet}" class="btn btn-warring">Chi tiet</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center pagination-sm">
+                    <li class="page-item">
+                        <a class="page-link"
+                           th:style="${pageNo == 1 ? 'pointer-events: none; background-color: #ccc;' : '' }"
+                           th:href="@{/admin/san-pham/hien-thi(page=${pageNo - 1})}">
+                            Trước
+                        </a></li>
+                    <li th:if="${data.totalPages > 0}" class="page-link"
+                        th:each="pageNumber : ${pageNumbers}">
+                        <a th:href="@{/admin/san-pham/hien-thi(page=${pageNumber})}"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber==data.number + 1} ? active"
+                           class="page-link"
+                        ></a>
+                    </li>
+                    <li class="page-item" th:if="${pageNumbers.size() != null || pageNumbers.size() != 0}">
+                        <a class="page-link"
+                           th:style="${pageNo >= pageNumbers.size() ? 'pointer-events: none; background-color: #ccc;' : '' }"
+                           th:href="@{/admin/san-pham/hien-thi(page=${pageNo + 1})}">
+                            Tiếp
+                        </a></li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <section class="container mb-3">
+        <h3 class="text-center">San pham chi tiet</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Size</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thương hiệu</th>
+                <th scope="col">Chất liệu</th>
+                <th scope="col">Loại áo</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="temp, loop: ${sanPhamChiTiets}">
+                <th scope="row" th:text="${loop.index + 1}"></th>
+                <td>
+                    <img th:src="@{${temp.duongDanAnh}}" class="image-products"/>
+                    <span th:text="${temp.tenSanPham}"></span>
+                </td>
+                <td th:text="${temp.kichCo}"></td>
+                <td th:text="${temp.soLuong}"></td>
+                <td th:text="${temp.tenThuongHieu}"></td>
+                <td th:text="${temp.tenChatLieu}"></td>
+                <td th:text="${temp.loaiAo}"></td>
+                <td>
+                    <a th:href="@{/admin/kich-co-san-pham/detail(idSanPham=${temp.idSanPham})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/admin/kich-co-san-pham/delete(idSanPham=${temp.idSanPham})}" class="btn btn-danger">Remove</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+</html>

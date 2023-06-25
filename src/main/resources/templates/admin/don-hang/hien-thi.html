@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin-css.css}"/>
+
+    <style>
+        strong {
+            font-size: 14px;
+        }
+
+        label {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<main class="container">
+    <section class="mt-5 mb-5">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ảnh sản phẩm</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Giá bán</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Tên người nhận</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Địa chỉ</th>
+                <th scope="col">Ngày đặt</th>
+                <th scope="col">Tổng tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="temp, loop: ${data}">
+                <td th:text="${loop.index + 1}"></td>
+                <td>
+                    <img th:src="@{${temp.anhSanPham}}" class="image-products">
+                </td>
+                <td>
+                    <strong>Tên sản phẩm: </strong>
+                    <label th:text="${temp.tenSanPham}"></label>
+                    <br>
+                    <strong>Màu: </strong>
+                    <label th:text="${temp.mauSac}"></label>
+                    <br>
+                    <strong>Kích cỡ: </strong>
+                    <label th:text="${temp.kichCo}"></label>
+                </td>
+                <td th:text="${temp.giaSanPham}"></td>
+                <td th:text="${temp.soLuong}"></td>
+                <td th:text="${temp.nguoiDat}"></td>
+                <td th:text="${temp.diaChi}"></td>
+                <td th:text="${temp.soDienThoai}"></td>
+                <td th:text="${temp.ngayDat}"></td>
+                <td th:text="${temp.soLuong * temp.giaSanPham}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!--    <div>-->
+        <!--      <nav aria-label="Page navigation example">-->
+        <!--        <ul class="pagination justify-content-center pagination-sm">-->
+        <!--          <li class="page-item">-->
+        <!--            <a class="page-link"-->
+        <!--               th:style="${pageNo == 1 ? 'pointer-events: none; background-color: #ccc;' : '' }"-->
+        <!--               th:href="@{/admin/kich-co/hien-thi(page=${pageNo - 1})}">-->
+        <!--              Trước-->
+        <!--            </a></li>-->
+        <!--          <li th:if="${data.totalPages > 0}" class="page-link"-->
+        <!--              th:each="pageNumber : ${pageNumbers}">-->
+        <!--            <a th:href="@{/admin/kich-co/hien-thi(page=${pageNumber})}"-->
+        <!--               th:text="${pageNumber}"-->
+        <!--               th:class="${pageNumber==data.number + 1} ? active"-->
+        <!--               class="page-link"-->
+        <!--            ></a>-->
+        <!--          </li>-->
+        <!--        </ul>-->
+        <!--      </nav>-->
+        <!--    </div>-->
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
