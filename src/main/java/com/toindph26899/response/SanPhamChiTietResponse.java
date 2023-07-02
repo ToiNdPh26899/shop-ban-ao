@@ -20,6 +20,8 @@ import java.util.List;
 @Builder
 public class SanPhamChiTietResponse {
 
+    private Long idGioHangChiTiet;
+
     private Long idSanPham;
 
     private String tenSanPham;

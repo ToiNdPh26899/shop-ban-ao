@@ -79,7 +79,7 @@ public class DonHangChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "id_san_pham")
-    private SanPham idSanPham;
+    private SanPhamKichCoMauSac idSanPham;
 
     @Column(name = "so_luong")
     private Integer soLuong;

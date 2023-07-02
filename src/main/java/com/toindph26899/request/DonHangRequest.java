@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class DonHangRequest {
 
-    private Long idDonHang;
+    private List<Long> idDonHang;
 
     private List<Long> idSanPham;
 

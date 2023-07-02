@@ -1,13 +1,6 @@
 package com.toindph26899.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,7 +56,7 @@ public class KhachHang {
     @Column(name = "diem_tich_luy")
     private Integer diemTichLuy;
 
-    @Column(name = "tran_thai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "idKhachHang")
@@ -71,5 +64,8 @@ public class KhachHang {
 
     @OneToMany(mappedBy = "nguoiSoHuu")
     private List<GioHang> gioHangs;
+
+    @OneToMany(mappedBy = "idKhachHang")
+    private List<TaiKhoan> taiKhoans;
 
 }

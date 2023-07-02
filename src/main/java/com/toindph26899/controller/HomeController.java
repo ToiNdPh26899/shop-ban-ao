@@ -1,10 +1,8 @@
 package com.toindph26899.controller;
 
 import com.toindph26899.request.CartItemRequest;
-import com.toindph26899.service.DonHangService;
-import com.toindph26899.service.MauSacService;
-import com.toindph26899.service.SanPhamChiTietService;
-import com.toindph26899.service.SanPhamKichCoMauSacService;
+import com.toindph26899.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +23,15 @@ public class HomeController {
     @Autowired
     private MauSacService mauSacService;
 
+    @Autowired
+    private TaiKhoanService taiKhoanService;
+
     @GetMapping("/index")
     public String home(Model model) {
+
         model.addAttribute("data", sanPhamChiTietService.newProducts());
+
+        model.addAttribute("account", taiKhoanService.checkLogin());
 
         return "index";
     }
@@ -39,6 +43,7 @@ public class HomeController {
         model.addAttribute("item", new CartItemRequest());
         model.addAttribute("kichCos", sanPhamChiTietService.kichCoList(id));
         model.addAttribute("mauSacs", mauSacService.findMauSacByIdSanPham(id));
+        model.addAttribute("account", taiKhoanService.checkLogin());
 
         return "/pages/product-detail";
     }
@@ -46,7 +51,9 @@ public class HomeController {
     @GetMapping("/tra-cuu-don-hang/result")
     public String traCuu(@RequestParam("soDienThoai") String soDienThoai,
                          Model model) {
+        model.addAttribute("account", taiKhoanService.checkLogin());
         model.addAttribute("data", donHangService.traCuuDonHang(soDienThoai));
+
         return "/pages/tra-cuu-don-hang";
     }
 

@@ -47,7 +47,6 @@ public class DonHangServiceImpl implements DonHangService {
         long random1 = (long) (Math.random() * 999999999);
 
         return DonHang.builder()
-                .id(request.getIdDonHang())
                 .maHoaDon("HD_" + random)
                 .maKhachHang("CLIENT_" + random1)
                 .diaChiNhanHang(request.getDiaChiNguoiNhan())
@@ -64,12 +63,12 @@ public class DonHangServiceImpl implements DonHangService {
 
     private DonHangChiTiet donHangChiTiet(DonHang donHang, DonHangChiTietRequest request) {
 
-        Optional<SanPham> sanPhamOptional = sanPhamRepository.findById(request.getIdSanPham());
+        Optional<SanPhamKichCoMauSac> sanPhamKichCoMauSacOptional = sanPhamKichCoMauSacRepository.findById(request.getIdSanPham());
 
-        SanPham sanPham = null;
+        SanPhamKichCoMauSac sanPhamKichCoMauSac = null;
 
-        if (sanPhamOptional.isPresent()) {
-            sanPham = sanPhamOptional.get();
+        if (sanPhamKichCoMauSacOptional.isPresent()) {
+            sanPhamKichCoMauSac = sanPhamKichCoMauSacOptional.get();
         } else {
             return null;
         }
@@ -78,7 +77,7 @@ public class DonHangServiceImpl implements DonHangService {
                 .id(request.getId())
                 .soLuong(request.getSoLuong())
                 .idDonHang(donHang)
-                .idSanPham(sanPham)
+                .idSanPham(sanPhamKichCoMauSac)
                 .donGia(request.getDonGia())
                 .trangThai(1)
                 .ghiChu(request.getGhiChu())
@@ -110,6 +109,7 @@ public class DonHangServiceImpl implements DonHangService {
             donHangChiTietRequest.setIdSanPham(spct.getIdSanPham());
             donHangChiTietRequest.setSoLuong(spct.getSoLuong());
             donHangChiTietRequest.setDonGia(spct.getGiaGiaoBan());
+            donHangChiTietRequest.setGhiChu(request.getGhiChu());
 
             donHangChiTietRepository.save(Objects.requireNonNull(donHangChiTiet(donHang,
                     donHangChiTietRequest)));

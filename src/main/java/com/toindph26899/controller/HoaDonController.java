@@ -1,10 +1,12 @@
 package com.toindph26899.controller;
 
+import com.toindph26899.entity.TaiKhoan;
 import com.toindph26899.request.DonHangRequest;
 import com.toindph26899.response.SanPhamChiTietResponse;
 import com.toindph26899.service.DonHangService;
 import com.toindph26899.service.GioHangService;
 import com.toindph26899.service.SanPhamChiTietService;
+import com.toindph26899.service.TaiKhoanService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,31 +33,54 @@ public class HoaDonController {
     @Autowired
     private DonHangService donHangService;
 
+    @Autowired
+    private TaiKhoanService taiKhoanService;
+
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("donHang") DonHangRequest request,
                        BindingResult bindingResult, Model model) {
 
-        List<SanPhamChiTietResponse> list = sanPhamChiTietService.sanPhamCheckout(request.getIdSanPham());
+        TaiKhoan taiKhoan = taiKhoanService.checkLogin();
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("data", list);
-            model.addAttribute("idSanPham", request.getIdSanPham());
-            model.addAttribute("tongTien", sanPhamChiTietService.tongTien(list));
+        System.out.println("DonHanggg: " + request.getIdSanPham());
 
-            return "pages/check-out";
-        }
+        if (taiKhoan == null) {
+            List<SanPhamChiTietResponse> list = sanPhamChiTietService.sanPhamCheckout(request.getIdSanPham());
 
-        donHangService.saveDonHang(request, list);
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("data", list);
+                model.addAttribute("idSanPham", request.getIdSanPham());
+                model.addAttribute("tongTien", sanPhamChiTietService.tongTien(list));
 
-        if (request.getIdSanPham().size() > 1) {
-            gioHangService.removeObjectByIdSanPham(request.getIdSanPham());
+                return "pages/check-out";
+            }
+
+            donHangService.saveDonHang(request, list);
+
+            if (request.getIdSanPham().size() > 1) {
+                gioHangService.removeObjectByIdSanPham(request.getIdSanPham());
+            } else {
+                gioHangService.removeSanPhamToCart(request.getIdSanPham().get(0));
+            }
         } else {
-            gioHangService.removeSanPhamToCart(
-                    request.getIdSanPham().get(0),
-                    request.getIdKichCo().get(0),
-                    request.getIdMauSac().get(0));
-        }
+            model.addAttribute("account", taiKhoan);
 
+            List<SanPhamChiTietResponse> list = gioHangService.gioHangByUser(taiKhoan.getId());
+
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("data", list);
+                model.addAttribute("idSanPham", request.getIdSanPham());
+                model.addAttribute("tongTien", sanPhamChiTietService.tongTien(list));
+
+                return "pages/check-out";
+            }
+
+            donHangService.saveDonHang(request, list);
+
+            if (request.getIdSanPham().size() > 1) {
+                gioHangService.removeSanPhamToCartByUserDone(request.getIdSanPham());
+            }
+        }
 
         return "redirect:/t-shop/cart";
     }
@@ -66,25 +91,52 @@ public class HoaDonController {
                           @RequestParam("mauSac") List<String> mauSac,
                           @RequestParam("kichCo") List<String> kichCo) {
 
-        List<SanPhamChiTietResponse> list = sanPhamChiTietService.sanPhamCheckout(request.getIdSanPham());
+        TaiKhoan taiKhoan = taiKhoanService.checkLogin();
 
-        if (list.isEmpty()) {
-            model.addAttribute("data", gioHangService.findAll());
-            model.addAttribute("display", true);
-            model.addAttribute("tongTien", gioHangService.tongTien());
-            model.addAttribute("errors", "Chọn 1 sản phẩm trước khi thanh toán");
+        if (taiKhoan == null) {
+            List<SanPhamChiTietResponse> list =
+                    sanPhamChiTietService.sanPhamCheckout(request.getIdSanPham());
 
-            return "pages/gio-hang";
+            if (list.isEmpty()) {
+                model.addAttribute("data", gioHangService.findAll());
+                model.addAttribute("display", true);
+                model.addAttribute("tongTien", gioHangService.tongTien());
+                model.addAttribute("errors", "Chọn 1 sản phẩm trước khi thanh toán");
+
+                return "pages/gio-hang";
+            }
+
+            request.setIdKichCo(kichCo);
+            request.setIdMauSac(mauSac);
+
+            model.addAttribute("data", list);
+            model.addAttribute("idSanPham", request.getIdSanPham());
+            model.addAttribute("idKichCo", kichCo);
+            model.addAttribute("idMauSac", mauSac);
+            model.addAttribute("tongTien", sanPhamChiTietService.tongTien(list));
+        } else {
+            model.addAttribute("account", taiKhoan);
+
+            List<SanPhamChiTietResponse> list = gioHangService.gioHangByUser(taiKhoan.getId());
+
+            if (list.isEmpty()) {
+                model.addAttribute("data", gioHangService.findAll());
+                model.addAttribute("display", true);
+                model.addAttribute("tongTien", gioHangService.tongTien());
+                model.addAttribute("errors", "Chọn 1 sản phẩm trước khi thanh toán");
+
+                return "pages/gio-hang";
+            }
+
+            request.setIdKichCo(kichCo);
+            request.setIdMauSac(mauSac);
+
+            model.addAttribute("data", list);
+            model.addAttribute("idSanPham", request.getIdSanPham());
+            model.addAttribute("idKichCo", kichCo);
+            model.addAttribute("idMauSac", mauSac);
+            model.addAttribute("tongTien", sanPhamChiTietService.tongTien(list));
         }
-
-        request.setIdKichCo(kichCo);
-        request.setIdMauSac(mauSac);
-
-        model.addAttribute("data", list);
-        model.addAttribute("idSanPham", request.getIdSanPham());
-        model.addAttribute("idKichCo", kichCo);
-        model.addAttribute("idMauSac", mauSac);
-        model.addAttribute("tongTien", sanPhamChiTietService.tongTien(list));
 
         return "/pages/check-out";
     }

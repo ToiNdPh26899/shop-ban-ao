@@ -1,5 +1,6 @@
 package com.toindph26899.service;
 
+import com.toindph26899.entity.SanPhamKichCoMauSac;
 import com.toindph26899.response.KichCoResponse;
 import com.toindph26899.response.SanPhamChiTietResponse;
 import com.toindph26899.response.SanPhamView;
@@ -18,8 +19,12 @@ public interface SanPhamChiTietService {
 
     SanPhamChiTietResponse getOne(Long id);
 
+    SanPhamKichCoMauSac getOne(Long idSanPham, String mauSac, String kichCo);
+
     List<SanPhamChiTietResponse> sanPhamCheckout(List<Long> id);
 
     Double tongTien(List<SanPhamChiTietResponse> list);
+
+    Long idSanPhamChiTiet(Long idSanPham, String mauSac, String kichCo);
 
 }

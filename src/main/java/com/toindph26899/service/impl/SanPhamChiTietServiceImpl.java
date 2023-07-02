@@ -2,8 +2,10 @@ package com.toindph26899.service.impl;
 
 import com.toindph26899.entity.AnhSanPham;
 import com.toindph26899.entity.SanPham;
+import com.toindph26899.entity.SanPhamKichCoMauSac;
 import com.toindph26899.repository.AnhSanPhamRepository;
 import com.toindph26899.repository.KichCoRepository;
+import com.toindph26899.repository.SanPhamKichCoMauSacRepository;
 import com.toindph26899.repository.SanPhamRepository;
 import com.toindph26899.response.KichCoResponse;
 import com.toindph26899.response.SanPhamChiTietResponse;
@@ -25,6 +27,9 @@ import java.util.Optional;
 
 @Service
 public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
+
+    @Autowired
+    private SanPhamKichCoMauSacRepository sanPhamKichCoMauSacRepository;
 
     @Autowired
     private SanPhamRepository sanPhamRepository;
@@ -74,42 +79,52 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
     @Override
     public SanPhamChiTietResponse getOne(Long id) {
 
-        Optional<SanPham> sanPhamOptional = sanPhamRepository.findById(id);
+        Optional<SanPhamKichCoMauSac> sanPhamKichCoMauSacOptional = sanPhamKichCoMauSacRepository.findById(id);
         AnhSanPham anhSanPham = anhSanPhamRepository.anhSanPham(id);
 
-        SanPham sanPham = null;
+        SanPhamKichCoMauSac sanPhamKichCoMauSac = null;
 
-        if (sanPhamOptional.isPresent()) {
-            sanPham = sanPhamOptional.get();
+        if (sanPhamKichCoMauSacOptional.isPresent()) {
+            sanPhamKichCoMauSac = sanPhamKichCoMauSacOptional.get();
         } else {
             return null;
         }
 
         return SanPhamChiTietResponse.builder()
-                .idSanPham(sanPham.getId())
-                .tenSanPham(sanPham.getTenSanPham())
-                .giaGiaoBan(sanPham.getGiaGiaoBan())
+                .idGioHangChiTiet(sanPhamKichCoMauSac.getId())
+                .idSanPham(sanPhamKichCoMauSac.getId())
+                .tenSanPham(sanPhamKichCoMauSac.getIdSanPham().getTenSanPham())
+                .giaGiaoBan(sanPhamKichCoMauSac.getIdSanPham().getGiaGiaoBan())
                 .duongDanAnh(anhSanPham.getDuongDanAnh())
-                .moTa(sanPham.getMoTa())
-                .tenChatLieu(sanPham.getIdChatLieu().getTenChatLieu())
-                .loaiAo(sanPham.getIdLoaiAo().getTenLoaiAo())
-                .loaiCoAo(sanPham.getIdLoaiAo().getTenLoaiAo())
-                .loaiTayAo(sanPham.getIdLoaiAo().getTenLoaiAo())
-                .tenThuongHieu(sanPham.getIdThuongHieu().getTenThuongHieu())
-                .soLuong(sanPham.getSoLuongTon())
+                .moTa(sanPhamKichCoMauSac.getIdSanPham().getMoTa())
+                .tenChatLieu(sanPhamKichCoMauSac.getIdSanPham().getIdChatLieu().getTenChatLieu())
+                .loaiAo(sanPhamKichCoMauSac.getIdSanPham().getIdLoaiAo().getTenLoaiAo())
+                .loaiCoAo(sanPhamKichCoMauSac.getIdSanPham().getIdLoaiAo().getTenLoaiAo())
+                .loaiTayAo(sanPhamKichCoMauSac.getIdSanPham().getIdLoaiAo().getTenLoaiAo())
+                .tenThuongHieu(sanPhamKichCoMauSac.getIdSanPham().getIdThuongHieu().getTenThuongHieu())
+                .soLuong(sanPhamKichCoMauSac.getIdSanPham().getSoLuongTon())
                 .build();
     }
 
     @Override
+    public SanPhamKichCoMauSac getOne(Long idSanPham, String mauSac, String kichCo) {
+        return
+                null;
+    }
+
+    @Override
     public List<SanPhamChiTietResponse> sanPhamCheckout(List<Long> id) {
+
         List<SanPhamChiTietResponse> list = new ArrayList<>();
-        for (SanPhamChiTietResponse item : gioHangService.findAll()) {
-            for (Long l : id) {
-                if (Objects.equals(item.getIdSanPham(), l)) {
-                    list.add(item);
+
+        for (SanPhamChiTietResponse spct : gioHangService.findAll()) {
+            for (Long idGioHangChiTiet : id) {
+                if (spct.getIdGioHangChiTiet().equals(idGioHangChiTiet)) {
+                    list.add(spct);
                 }
             }
         }
+
         return list;
     }
 
@@ -123,5 +138,10 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
         }
 
         return tongTien;
+    }
+
+    @Override
+    public Long idSanPhamChiTiet(Long idSanPham, String mauSac, String kichCo) {
+        return sanPhamKichCoMauSacRepository.idSanPhamChiTiet(idSanPham, mauSac, kichCo);
     }
 }

@@ -96,10 +96,4 @@ public class SanPham {
     @OneToMany(mappedBy = "idSanPham")
     private List<AnhSanPham> anhSanPhams;
 
-    @OneToMany(mappedBy = "idSanPham")
-    private List<DonHangChiTiet> donHangChiTiets;
-
-    @OneToMany(mappedBy = "idSanPham")
-    private List<GioHangChiTiet> gioHangChiTiets;
-
 }

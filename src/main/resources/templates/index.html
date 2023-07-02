@@ -23,13 +23,20 @@
                     </div>
 
                     <div th:class="'col-6 top-right'">
-                        <a href="">sing in</a>
+                        <a th:if="${account == null}" th:href="@{/login-form}">login</a>
+                        <div th:if="${account != null}" class="login-check">
+                            <p th:text="${account.username}"></p>
+                            <form action="#"
+                                  th:action="@{/logout}"
+                                  method="post">
+                                <input type="submit" value="Logout" class="btn btn-danger">
+                            </form>
+                        </div>
                         <a href="#">faqs</a>
                     </div>
                 </div>
             </section>
         </section>
-
 
         <section th:class="'header-bottom'">
             <section th:class="'container'">

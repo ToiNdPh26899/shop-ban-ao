@@ -21,7 +21,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
             "from SanPham sp ")
     List<SanPhamResponse> findAllSanPhamCustom();
 
-    @Query("select new com.toindph26899.response.SanPhamChiTietResponse(sp.id, " +
+    @Query("select new com.toindph26899.response.SanPhamChiTietResponse(spkc.id, sp.id, " +
             "sp.tenSanPham, sp.giaGiaoBan, asp.duongDanAnh, sp.moTa, " +
             "sp.idChatLieu.tenChatLieu, spkc.idMauSac.tenMauSac, sp.idLoaiAo.tenLoaiAo, " +
             "sp.idCoAo.tenCoAo, sp.idTayAo.loaiTayAo, sp.idThuongHieu.tenThuongHieu, " +
@@ -34,4 +34,5 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
     @Query(nativeQuery = true)
     List<SanPhamView> listHienThi();
 
+    SanPham findSanPhamById(Long idSanPham);
 }

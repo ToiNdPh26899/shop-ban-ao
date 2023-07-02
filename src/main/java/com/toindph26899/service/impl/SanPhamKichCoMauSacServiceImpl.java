@@ -62,8 +62,13 @@ public class SanPhamKichCoMauSacServiceImpl implements SanPhamKichCoMauSacServic
 
         for (MauSac mauSac : mauSacs) {
             for (KichCo kichCo : kichCos) {
-                SanPhamKichCoMauSac sanPhamKichCoMauSac = new SanPhamKichCoMauSac(null,
-                        sanPham, kichCo, mauSac, request.getSoLuong(), 1);
+                SanPhamKichCoMauSac sanPhamKichCoMauSac = SanPhamKichCoMauSac.builder()
+                        .idSanPham(sanPham)
+                        .idKichCo(kichCo)
+                        .idMauSac(mauSac)
+                        .soLuong(request.getSoLuong())
+                        .trangThai(1)
+                        .build();
 
                 soLuongSanPhamUpdate += request.getSoLuong();
 

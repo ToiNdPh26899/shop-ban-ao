@@ -1,11 +1,7 @@
 package com.toindph26899.controller;
 
 import com.toindph26899.entity.LoaiAo;
-import com.toindph26899.service.KichCoService;
-import com.toindph26899.service.LoaiAoService;
-import com.toindph26899.service.MauSacService;
-import com.toindph26899.service.SanPhamChiTietService;
-import com.toindph26899.service.ThuongHieuService;
+import com.toindph26899.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,12 +29,14 @@ public class ShopController {
     @Autowired
     private MauSacService mauSacService;
 
+    @Autowired
+    private TaiKhoanService taiKhoanService;
+
     @GetMapping("/hien-thi")
     public String hienThi(Model model,
                           @RequestParam(value = "loaiAoId", defaultValue = "-1") Long id) {
 
-        System.out.println(id);
-
+        model.addAttribute("account", taiKhoanService.checkLogin());
         model.addAttribute("data", sanPhamChiTietService.newProducts());
         model.addAttribute("loaiAos", loaiAoService.findAll());
         model.addAttribute("thuongHieus", thuongHieuService.findAll());

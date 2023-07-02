@@ -24,7 +24,15 @@
                     </div>
 
                     <div th:class="'col-6 top-right'">
-                        <a href="">sing in</a>
+                        <a th:if="${account == null}" th:href="@{/login-form}">login</a>
+                        <div th:if="${account != null}" class="login-check">
+                            <p th:text="${account.username}"></p>
+                            <form action="#"
+                                  th:action="@{/logout}"
+                                  method="post">
+                                <input type="submit" value="Logout" class="btn btn-danger">
+                            </form>
+                        </div>
                         <a href="#">faqs</a>
                     </div>
                 </div>
@@ -109,10 +117,11 @@
                                        name="checkbox"
                                        id="checkbox1"
                                        th:field="*{idSanPham}"
-                                       th:value="${temp.idSanPham}">
+                                       th:value="${temp.idGioHangChiTiet}">
 
                                 <input type="hidden" name="mauSac" th:value="${temp.mauSac}">
                                 <input type="hidden" name="kichCo" th:value="${temp.kichCo}">
+                                <input type="hidden" th:field="*{idDonHang}" th:value="${temp.idSanPham}">
                             </label>
                         </th>
                         <td>
@@ -125,7 +134,7 @@
                         <td th:text="${temp.soLuong}"></td>
                         <td th:text="${temp.soLuong * temp.giaGiaoBan}"></td>
                         <td>
-                            <a th:href="@{/t-shop/cart/remove(idSanPham=${temp.idSanPham}, idKichCo=${temp.kichCo},
+                            <a th:href="@{/t-shop/cart/remove(idSanPham=${temp.idGioHangChiTiet}, idKichCo=${temp.kichCo},
                             idMauSac=${temp.mauSac})}"
                                class="btn btn-danger"
                                onclick="if(!(confirm('Bạn có muốn xóa sản phẩm khỏi giỏ hàng không?'))) return false;"
